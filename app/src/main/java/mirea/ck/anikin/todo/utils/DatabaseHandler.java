@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import mirea.ck.anikin.todo.Model.ToDoModel;
+import mirea.ck.anikin.todo.model.ToDoModel;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int VERSION = 1;
@@ -31,13 +31,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE users (username TEXT, password TEXT)");
+
         db.execSQL(CREATE_TODO_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TODO_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS users");
         onCreate(db);
+    }
+
+    public boolean insertUser(String username, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("username", username);
+        cv.put("password", password);
+        long results = db.insert("users", null, cv);
+        return results != -1;
+    }
+
+    public boolean checkUsername(String username) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM users WHERE username=?", new String[]{username});
+        return cursor.getCount() > 0;
+    }
+
+    public boolean checkUsernamePassword(String username, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM users WHERE username = ? AND password = ?",
+                new String[]{username, password});
+        return cursor.getCount() > 0;
     }
 
     public void openDatabase() {
@@ -59,8 +86,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         try {
             cur = db.query(TODO_TABLE, null, null, null,
                     null, null, null, null);
-            if (cur != null){
-                if(cur.moveToFirst()){
+            if (cur != null) {
+                if (cur.moveToFirst()) {
                     do {
                         ToDoModel task = new ToDoModel();
                         task.setId(cur.getInt(cur.getColumnIndex(ID)));
@@ -79,19 +106,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return taskList;
     }
 
-    public void updateStatus(int id, int status){
+    public void updateStatus(int id, int status) {
         ContentValues cv = new ContentValues();
         cv.put(STATUS, status);
-        db.update(TODO_TABLE, cv, ID + "=?", new String[] {String.valueOf(id)});
+        db.update(TODO_TABLE, cv, ID + "=?", new String[]{String.valueOf(id)});
     }
 
-    public void updateTask(int id, String task){
+    public void updateTask(int id, String task) {
         ContentValues cv = new ContentValues();
         cv.put(TASK, task);
-        db.update(TODO_TABLE, cv, ID + "=?", new String[] {String.valueOf(id)});
+        db.update(TODO_TABLE, cv, ID + "=?", new String[]{String.valueOf(id)});
     }
 
-    public void deleteTask(int id){
-        db.delete(TODO_TABLE, ID + "=?", new String[] {String.valueOf(id)});
+    public void deleteTask(int id) {
+        db.delete(TODO_TABLE, ID + "=?", new String[]{String.valueOf(id)});
     }
 }

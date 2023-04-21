@@ -1,4 +1,4 @@
-package mirea.ck.anikin.todo.Model;
+package mirea.ck.anikin.todo.model;
 
 public class ToDoModel {
     private int id;

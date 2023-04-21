@@ -1,4 +1,4 @@
-package mirea.ck.anikin.todo.Adapter;
+package mirea.ck.anikin.todo.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import java.util.List;
 
 import mirea.ck.anikin.todo.AddNewTask;
 import mirea.ck.anikin.todo.MainActivity;
-import mirea.ck.anikin.todo.Model.ToDoModel;
+import mirea.ck.anikin.todo.model.ToDoModel;
 import mirea.ck.anikin.todo.R;
 import mirea.ck.anikin.todo.utils.DatabaseHandler;
 

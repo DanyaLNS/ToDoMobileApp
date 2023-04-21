@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import mirea.ck.anikin.todo.Adapter.ToDoAdapter;
-import mirea.ck.anikin.todo.Model.ToDoModel;
+import mirea.ck.anikin.todo.adapter.ToDoAdapter;
+import mirea.ck.anikin.todo.model.ToDoModel;
 import mirea.ck.anikin.todo.utils.DatabaseHandler;
 
 public class MainActivity extends AppCompatActivity implements DialogCloseListener {
